@@ -1,5 +1,5 @@
 # PrematureXorSwap
-XOR swap is still the fastest tmp option. 
+XOR swap is ~still~ almost the fastest swap option. 
 
 ## background
 I recently noticed an opportunity to tweak some tree code and insert an xorswap.  I was proud of my old school skillz.
