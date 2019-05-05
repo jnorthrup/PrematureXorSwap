@@ -21,32 +21,33 @@ the new code runs in main.  it tests
    * the c code xor swap from days of yow
  
  tmpswap: 
-   * the supposed faster optimizable option proven by java 1.7
+   * the supposed faster optimizable option proven by java 1.7.  discrete loop optimizers make this one faster in ways that don't occur inline with other loops in same method.  (jdk 12, as of commit time)
  
  R64:
    * can we make a 64 bit tmp run faster than tmp ?  nope, but it edges out xor swap.
 
  xor tmp swap:
-   * is assignment truly faster than xor? well, we try XOR on two temps!  FTW!!!!
+   * is assignment truly faster than xor? well, we try XOR on two temps!  ~FTW!!!!~
+   * as we blow out the one-big-method benchmark into multiple simple loop methods we see the tmpSwap takes the lead away from xor tmp.
    
 
 some steady-state jvm results (lower is gooder)
 
 ```
-xorswap: 1000000:  2 @500000.0/ms
-xtmswap: 1000000:  1 @1000000.0/ms
-r64swap: 1000000:  2 @500000.0/ms
-tmpswap: 1000000:  1 @1000000.0/ms
-xorswap: 10000000:  18 @555555.5555555555/ms
-xtmswap: 10000000:  8 @1250000.0/ms
-r64swap: 10000000:  19 @526315.7894736842/ms
-tmpswap: 10000000:  9 @1111111.111111111/ms
-xorswap: 100000000:  177 @564971.7514124294/ms
-xtmswap: 100000000:  84 @1190476.1904761905/ms
-r64swap: 100000000:  186 @537634.4086021505/ms
-tmpswap: 100000000:  95 @1052631.5789473683/ms
-xorswap: 1000000000:  1784 @560538.1165919283/ms
-xtmswap: 1000000000:  828 @1207729.4685990338/ms
-r64swap: 1000000000:  1693 @590667.4542232723/ms
-tmpswap: 1000000000:  914 @1094091.9037199125/ms
+xorSwap: 1000000:  2 @500000.0/ms
+r64Swap: 1000000:  2 @500000.0/ms
+tmpSwap: 1000000:  1 @1000000.0/ms
+xorTmp: 1000000:  0 @Infinity/ms
+xorSwap: 10000000:  18 @555555.5555555555/ms
+r64Swap: 10000000:  17 @588235.2941176471/ms
+tmpSwap: 10000000:  8 @1250000.0/ms
+xorTmp: 10000000:  8 @1250000.0/ms
+xorSwap: 100000000:  182 @549450.5494505494/ms
+r64Swap: 100000000:  165 @606060.6060606061/ms
+tmpSwap: 100000000:  71 @1408450.704225352/ms
+xorTmp: 100000000:  81 @1234567.9012345679/ms
+xorSwap: 1000000000:  1819 @549752.6113249038/ms
+r64Swap: 1000000000:  1640 @609756.0975609756/ms
+tmpSwap: 1000000000:  689 @1451378.809869376/ms
+xorTmp: 1000000000:  816 @1225490.1960784313/ms
 ```
